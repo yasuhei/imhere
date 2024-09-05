@@ -1,4 +1,4 @@
-import { Text, View, TextInput, TouchableOpacity, NativeTouchEvent, NativeSyntheticEvent, FlatList } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, NativeTouchEvent, NativeSyntheticEvent, FlatList, Alert } from 'react-native';
 import { styles } from './styles';
 import { Participant } from '../../components/Participant';
 import { useState } from 'react';
@@ -9,11 +9,22 @@ export  function Home() {
   const participants = ['yasuhei', 'samara', 'pedro','ana', 'isa', 'felipe', 'lucas', 'andre', 'joao']
     function handleParticipantAdd(event: NativeSyntheticEvent<NativeTouchEvent>) {
         event.preventDefault()
-        // setName(event)
+        if(participants.includes("yasuhei")) {
+         return Alert.alert("Participante existe", "Já existe um participante")
+        }
     }
 
     function handleParticipantRemove(name: string) {
-      console.log('clicou em remover')
+      Alert.alert("Remover", `Remover o participante ${name}?`, [
+        {
+          text: 'Sim',
+          onPress: () => Alert.alert("Deletado")
+        },
+        {
+          text: "Não",
+          style: 'cancel'
+        }
+      ])
     }
   return (
     <View style={styles.container}>
@@ -35,10 +46,10 @@ export  function Home() {
           Ninguém chegou no evento ainda? Adicione participantes a sua lista de presença.
         </Text>
       )}
-        data={[]}
+        data={participants}
         keyExtractor={item => item}
         renderItem={({item}) => (
-          <Participant name={item} onRemove={() => handleParticipantRemove(name)} key={item} />
+          <Participant name={item} onRemove={() => handleParticipantRemove(item)} key={item} />
         
         )}
       
